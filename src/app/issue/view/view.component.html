@@ -1,0 +1,227 @@
+<app-nav>
+  <div class="row mb-3">
+      <div class="col-lg-5 col-md-6 col-sm-12 mt-5">
+          <div *ngIf="updateForm.dirty" class="alert alert-info-custom">
+              <strong>Information:</strong> You have made some changes. Any unsaved changes will be lost!
+          </div>
+          <form #updateForm="ngForm" (ngSubmit)="updateInformation()">
+              <div class="form-group">
+                  <label for="title">Title</label>
+                  <input type="text" name="title" [(ngModel)]="issue.title" #title="ngModel" class="form-control"
+                      id="title" readonly>
+              </div>
+              <div class="form-group">
+                  <label for="description">Description</label>
+                  <editor [(ngModel)]="issue.description" name="description"
+                      apiKey="6yjxkesit1nx0tsl0uca65sdy839l5xa85h686e60b6swbsr"
+                      [init]="{plugins: 'link', menubar:'edit format'}"></editor>
+                  <!-- <textarea rows="15" name="description" class="form-control" [froalaEditor]="options" #description="ngModel" [ngClass]="description.valid && (description.dirty || description.touched) ? 'is-valid' : 'is-invalid'" required [(ngModel)]="issue.description"
+                      id="description" placeholder="Enter description of the issue"></textarea> -->
+              </div>
+
+              <div class="form-group">
+                  <label for="assignee">Assignee</label>
+                  <select name="assignee" [(ngModel)]="issue.assignee" required class="form-control" id="assignee">
+                      <option *ngFor="let category of allUsers" [value]="category._id"> {{category.name | uppercase}}
+                      </option>
+                  </select>
+              </div>
+              <div class="form-group">
+                  <label for="status">Status</label>
+                  <select name="status" [(ngModel)]="issue.status" required class="form-control" id="status">
+                      <option *ngFor="let s of status" [value]="s"> {{s}}</option>
+                  </select>
+              </div>
+              <!--<div class="form-group">
+                   <label for="fileUpload">Attachments</label>
+                  <input type="file" name="attachment" [(ngModel)]="issue.attachment" required multiple class="form-control-file" id="attachment"> 
+                  
+              </div>-->
+
+              <div class="col-sm-12">
+                  <div class="row">
+                      <button type="button" class="btn attachment btn-block"
+                          (click)="openAttachmentModal(templateAttachment)">Add more attachments</button>
+                      <div class="col-sm-3 mb-3 mt-3" *ngFor="let photo of attachment">
+                          <img src="{{photoUrl}}{{photo}}" (click)="openModal(photo, template)"
+                              class="img-thumbnail p-1" alt="">
+                          <div class="text-center">
+                              <button type="button" class="btn btn-sm delete"
+                                  (click)="openConfirmModal(photo, confirmTemplate)">
+                                  <i class="fas fa-minus-circle"></i></button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <button type="submit" class="btn update mt-2" [disabled]="!updateForm.dirty ||
+                   !updateForm.valid">Update information</button>
+              </div>
+          </form>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-12 mt-5">
+          <div class="card">
+              <div class="card-header">
+                  <span><i class="far fa-comments"></i> Comment Section</span>
+              </div>
+              <div class="card-body">
+                  <div *ngIf="comments.length>0">
+                      <ul #scrollMe [scrollTop]="(scrollToCommentTop)?0:scrollMe.scrollHeight"
+                          class="list-group comments">
+                          <li class="p-0 list-group-item cursorPointer text-center">
+                              <span (click)="loadEarlierComments()">Load Previous Comments</span>
+                              <br>
+                              <span *ngIf=" loadingPreviousChat==true">Loading...</span></li>
+                          <li class="p-2 list-group-item" *ngFor="let comment of comments"
+                              [ngClass]="{ 'text-right list-group-item-primary': comment.createdBy._id==currentUser.userDetails._id, 'list-group-item-light': comment.createdBy._id!=currentUser.userDetails._id}">
+                              <span class="text-capitalize">
+                                  <small><u>{{ comment.createdBy.name }}</u></small></span>
+                              <br />
+                              <strong>{{comment.description}}</strong>
+                              <br><span class="text-muted"><small>
+                                      {{ comment.createdOn | date:'medium' }}</small></span>
+                          </li>
+                      </ul>
+                  </div>
+                  <br />
+                  <textarea id="txtMessageText" class="form-control" rows="3" placeholder="Press Ctrl+Enter to send"
+                      (keydown)="postUsingKeyPress($event)" [(ngModel)]="commentDescription"
+                      name="commentDescription"></textarea>
+                  <br />
+                  <input type="button" class="btn btn-sm post pull-right" (click)="postComment()" value="Post"
+                      [disabled]="commentDescription ==''" />
+              </div>
+          </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-12 mt-5">
+          <div class="card">
+              <div class="card-header">
+                  <span><i class="far fa-eye"></i> Watcher List</span>
+                  <span class="pull-right"><button type="button" *ngIf="!isAWatcher && issue.createdBy != currentUser.userDetails._id" class="btn btn-sm watch"
+                          (click)="addWatcher()">Watch</button></span>
+              </div>
+              <div class="card-body">
+                  <div *ngIf="watchers.length>0">
+
+                      <ul class="list-group watchers">
+                          <li class="p-2 list-group-item list-group-item-light" *ngFor="let watcher of watchers">
+                              <span class="text-capitalize"> {{ watcher.watcherId.name }}</span>
+                              <br><span class="text-muted"><small>
+                                      {{ watcher.createdOn | date:'medium' }}</small></span>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</app-nav>
+
+<ng-template #template>
+  <div class="modal-content">
+      <div class="modal-header">
+          <h4 class="modal-title pull-left"></h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+          <img src="{{photo}}" class="img-fluid" alt="">
+      </div>
+  </div>
+  <!-- <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              ...asdasdasdas asdas das...asdasdasdas asdas das...asdasdasdas asdas das ...asdasdasdas asdas das...asdasdasdas asdas das ...asdasdasdas asdas das ...asdasdasdas asdas das ...asdasdasdas asdas das ...asdasdasdas asdas das
+
+          </div>
+      </div>
+  </div> -->
+</ng-template>
+
+<ng-template #confirmTemplate>
+  <div class="modal-header">
+      <h4 class="modal-title pull-left">Delete?</h4>
+  </div>
+  <div class="modal-body text-center">
+      <p>Are you sure you want to delete?</p>
+  </div>
+  <div class="modal-footer d-flex flex-row">
+
+      <button type="button" class="justify-content-start btn btn-danger" (click)="confirm()">Yes</button>
+      <button type="button" class="justify-content-end btn btn-success" (click)="decline()">No</button>
+  </div>
+</ng-template>
+<ng-template #templateAttachment>
+  <div class="modal-content">
+      <div class="modal-header">
+          <h4 class="modal-title pull-left">Add Attachments</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalAttachment.hide()">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+              <div class="col-md-3">
+                  <h3>Add photos</h3>
+                  <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
+                      [uploader]="uploader" class="card bg-faded p-3 text-center mb-3 my-drop-zone">
+                      <i class="fa fa-upload"></i> Drop photos here
+                  </div>
+                  Multiple
+                  <input type="file" ng2FileSelect [uploader]="uploader" multiple
+                      accept="image/x-png,image/gif,image/jpeg" /><br /> Single
+                  <input type="file" ng2FileSelect [uploader]="uploader" accept="image/x-png,image/gif,image/jpeg" />
+              </div>
+
+              <div class="col-md-9" style="margin-bottom: 40px" *ngIf="uploader?.queue?.length">
+
+                  <h3>Upload queue</h3>
+                  <p>Queue length: {{ uploader?.queue?.length }}</p>
+
+                  <table class="table">
+                      <thead>
+                          <tr>
+                              <th width="50%">Name</th>
+                              <th>Size</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let item of uploader.queue">
+                              <td><strong>{{ item?.file?.name }}</strong></td>
+                              <td *ngIf="uploader.options.isHTML5" nowrap>
+                                  {{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                          </tr>
+                      </tbody>
+                  </table>
+
+                  <div>
+                      <div>
+                          Queue progress:
+                          <div class="progress mb-4">
+                              <div class="progress-bar" role="progressbar"
+                                  [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                          </div>
+                      </div>
+                      <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
+                          [disabled]="!uploader.getNotUploadedItems().length">
+                          <span class="fa fa-upload"></span> Upload
+                      </button>
+                      <button type="button" class="btn btn-warning btn-s" (click)="uploader.cancelAll()"
+                          [disabled]="!uploader.isUploading">
+                          <span class="fa fa-ban"></span> Cancel
+                      </button>
+                      <button type="button" class="btn btn-danger btn-s" (click)="uploader.clearQueue()"
+                          [disabled]="!uploader.queue.length">
+                          <span class="fa fa-trash"></span> Remove
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</ng-template>
+
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="small" color="#e95420" type="ball-spin-clockwise-fade-rotating">
+  <p style="font-size: 14px; color: #ccc">Loading...</p>
+</ngx-spinner>

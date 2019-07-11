@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+    box-sizing: border-box;
+    font-family: 'Montserrat';
+    font-weight: 400;
+    
+}
+.ngx-toastr {
+    background-color: #37ff1d;
+    pointer-events: auto;
+  }
+.toast-success {
+    background-color: #32ff6a;
+  }
+  .toast-error {
+    background-color: #ed3833;
+  }
+  .toast-info {
+    background-color: #23eae6 ;
+  }
+  .toast-warning {
+    background-color: #ffbd39;
+  }

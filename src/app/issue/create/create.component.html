@@ -1,0 +1,42 @@
+<app-nav>
+
+  <div class="container col-lg-12 col-md-12 col-sm-12 mt-5">
+      <div *ngIf="createForm.dirty" class="alert alert-info-custom">
+          <strong>Information:</strong> You have made some changes. Any unsaved changes will be lost!
+      </div>
+      <form #createForm="ngForm" id="createForm" (ngSubmit)="saveData()">
+          <div class="form-group">
+              <label for="title">Title</label>
+              <input type="text" name="title" [(ngModel)]="issue.title"
+               #title="ngModel"
+                [ngClass]="title.valid && (title.dirty || title.touched) ? 'is-valid' : 'is-invalid'"
+                 required class="form-control text-capitalize" id="title" placeholder="Enter title of the issue">
+          </div>
+          <div class="form-group">
+              <label for="description">Description</label>
+              <editor [(ngModel)]="issue.description"
+               name="description" 
+               apiKey="6yjxkesit1nx0tsl0uca65sdy839l5xa85h686e60b6swbsr"
+                [init]="{plugins: 'link', menubar:'edit format'}"></editor>
+              <!-- <textarea rows="15" name="description" class="form-control" [froalaEditor]="options" #description="ngModel" [ngClass]="description.valid && (description.dirty || description.touched) ? 'is-valid' : 'is-invalid'" required [(ngModel)]="issue.description"
+                  id="description" placeholder="Enter description of the issue"></textarea> -->
+          </div>
+
+          <div class="form-group">
+              <label for="assignee">Assignee</label>
+
+              <select name="assignee" [(ngModel)]="issue.assignee" required class="form-control" id="assignee">
+              <option *ngFor="let category of allUsers" [value]="category._id"> {{category.name | uppercase}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+              <label for="fileUpload">Attachments</label>
+              <input type="file" name="attachment" [(ngModel)]="issue.attachment" required multiple class="form-control-file" id="attachment"  accept="image/x-png,image/gif,image/jpeg">
+          </div>
+          <button type="submit" class="btn btn-lg " [disabled]="!createForm.dirty || !createForm.valid"> Submit </button>
+      </form>
+  </div>
+</app-nav>
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="small" color="#e95420" type="ball-spin-clockwise-fade-rotating">
+  <p style="font-size: 14px; color: #ccc">Loading...</p>
+</ngx-spinner>

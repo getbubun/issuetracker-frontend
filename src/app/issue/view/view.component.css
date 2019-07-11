@@ -1,0 +1,110 @@
+.img-thumbnail {
+    height: 100px;
+    min-width: 100px !important;
+    margin-bottom: 2px;
+}
+
+.img-thumbnail:hover {
+    opacity: 0.7;
+}
+
+
+/*
+    For comment section
+*/
+
+.comments {
+    height: 45vh;
+    position: relative;
+    overflow: auto;
+}
+
+.watchers {
+    height: 80vh;
+    position: relative;
+    overflow: auto;
+}
+
+.nv-file-over {
+    border: dotted 3px rgb(255, 0, 0);
+}
+
+input[type="file"] {
+    color: transparent;
+}
+
+.cursorPointer {
+    cursor: pointer;
+}
+
+.float-right {
+    float: right;
+}
+
+#divShoutBox {
+    background-color: #fef0eb;
+    position: relative;
+    width: 100%;
+    height: 50vh;
+    overflow: auto;
+}
+
+.bg-second {
+    background-color: #94C2ED;
+}
+
+
+
+#txtMessageText {
+    width: 100%;
+    height: 100px;
+}
+
+#divShoutBox1 {
+    background-color: #f7f7f7;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: auto;
+}
+
+#txtMessageText1 {
+    width: 100%;
+    height: 100px;
+}
+
+.btn{
+    border-radius: 30px;
+}
+
+.attachment{
+    background-color: #0057fc;
+    color: white;
+}
+.watch{
+    background-color: #0057fc;
+      color: white;
+      
+}
+.pull-right{
+    margin-left: 1.5em;
+    
+}
+.update{
+    background-color: #00ff15;
+      color: white;
+}
+.post{
+    background-color: #00ff15;
+      color: rgb(255, 255, 255);
+}
+.delete{
+    background-color: #ff130a;
+    border-radius: 10px !important;
+      color: rgb(255, 255, 255);
+}
+.alert-info-custom{
+    background-color: #8c00ff;
+    border-radius: 10px !important;
+      color: rgb(255, 255, 255);
+}

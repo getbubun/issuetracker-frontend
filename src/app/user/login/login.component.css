@@ -1,0 +1,28 @@
+.fa-google {
+    float: left;
+    margin: 4px 15px 0 5px;
+    min-width: 15px;
+}
+
+.social-btn .btn {
+    border-radius: 30px;
+}
+
+ .login  {
+    background-color: #0057fc;
+    color: white;   
+}
+
+.google{
+    background-color: #f44336;
+    color: white;  
+}
+
+
+
+a {
+  cursor: pointer;  
+}
+
+
+

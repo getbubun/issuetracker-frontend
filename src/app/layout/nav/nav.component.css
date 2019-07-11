@@ -1,0 +1,19 @@
+.dropdown-toggle,
+.dropdown-item {
+    cursor: pointer
+}
+/* 
+.navbar-dark .navbar-nav .nav-link {
+    color: #f7f7f7;
+} */
+
+img {
+    max-height: 40px;
+    max-width: 40px;
+    display: inline;
+    border-radius: 30px;
+}
+
+a span i{
+    font-family: Montserrat !important;
+}

@@ -1,0 +1,76 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">issue tracker</a>
+
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" (click)="goToLogin()">Login</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <!-- <ng-content></ng-content> -->
+    <div class="row p-0 m-0">
+        <div class="col-lg"></div>
+        <div class="col-lg p-5">
+            <form [formGroup]="registerForm" (ngSubmit)="register()">
+                <!-- -->
+                <h2 class="text-center ">Sign Up</h2>
+                <hr>
+                <div class="form-group">
+                    <label for="inputEmail">Name</label>
+                    <input type="text" [ngClass]="{'is-invalid' : registerForm.get('name').errors && registerForm.get('name').touched}" class="form-control text-capitalize" formControlName="name" placeholder="Your name">
+                    <div class="invalid-feedback">Please enter your name</div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail">Email</label>
+                    <input type="email" class="form-control" formControlName="email" placeholder="Email (Username)" [ngClass]="{'is-invalid' : registerForm.get('email').errors
+                      && registerForm.get('email').touched
+                    || registerForm.get('email').touched &&  registerForm.get('email').hasError('email')
+                    
+                    }">
+                    <div class="invalid-feedback" *ngIf="registerForm.get('email').hasError('email') && registerForm.get('email').touched">Please enter valid email address</div>
+                    <div class="invalid-feedback" *ngIf="registerForm.get('email').hasError('required') && registerForm.get('email').touched">Please enter email address</div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail">Password</label>
+                    <input type="password" class="form-control" formControlName="password" placeholder="Password" [ngClass]="{'is-invalid' : registerForm.get('password').errors && registerForm.get('password').touched}">
+                    <div class="invalid-feedback">Please enter your password</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputEmail">Confirm Password</label>
+                    <input type="password" class="form-control" formControlName="confirmPassword" placeholder="Confirm Password" [ngClass]="{'is-invalid' : registerForm.get('confirmPassword').errors && registerForm.get('confirmPassword').touched
+                      || registerForm.get('confirmPassword').touched && registerForm.hasError('mismatch')}">
+
+
+                    <div class="invalid-feedback" *ngIf="registerForm.hasError('mismatch') && registerForm.get('confirmPassword').touched">Password must match</div>
+
+                    <div class="invalid-feedback" *ngIf="registerForm.get('confirmPassword').hasError('required') && registerForm.get('confirmPassword').touched">Password is required</div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="profilePic">Profile Picture</label>
+                    <input type="file" formControlName="profilePic" class="form-control-file" id="profilePic" accept="image/png, image/jpeg" [ngClass]="{'is-invalid': registerForm.get('profilePic').errors && registerForm.get('profilePic').touched 
+                    || registerForm.get('profilePic').touched && registerForm.hasError('fileextension')}">
+
+                    <div class="invalid-feedback" *ngIf="registerForm.hasError('fileextension')  && registerForm.get('profilePic').touched">Only jpeg/jpg.png allowed</div>
+
+                    <div class="invalid-feedback" *ngIf="registerForm.get('profilePic').hasError('required') && registerForm.get('profilePic').touched">Please select a file</div>
+
+                </div>
+
+                <div class="form-group text-center social-btn">
+                    <button class="btn btn-block signup" type="submit" [disabled]="!registerForm.valid" >Sign Up</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg"></div>
+    </div>
+</div>
+
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="small" color="#e95420" type="ball-spin-clockwise-fade-rotating">
+    <p style="font-size: 14px; color: rgb(98, 0, 255)">Loading...</p>
+</ngx-spinner>

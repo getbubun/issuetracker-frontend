@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+      <a class="navbar-brand" [routerLink]="['/dashboard']">issue tracker</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+          aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarColor02">
+          <ul class="navbar-nav mr-auto" *ngIf="loggedIn()">
+              <li class="nav-item" routerLinkActive="active">
+                  <a class="nav-link text-dark" [routerLink]="['/dashboard']"><span>Dashboard</span> </a>
+              </li>
+              <li class="nav-item" routerLinkActive="active">
+                  <a class="nav-link text-dark" [routerLink]="['/my-list']"><span>My Issues</span></a>
+              </li>
+              <li class="nav-item" routerLinkActive="active">
+                  <a class="nav-link text-dark" [routerLink]="['/search']"><span>All Issues</span></a>
+              </li>
+          </ul>
+          <div *ngIf="loggedIn()" class="dropdown" dropdown>
+              <span class="mr-1">
+                  <img src="{{photoUrl}}" alt="">
+              </span>
+              <a class="dropdown-toggle text-dark" dropdownToggle>
+                  {{userName | titlecase}}
+              </a>
+              <div class="dropdown-menu mt-3" *dropdownMenu>
+                  <!-- <a class="dropdown-item"> -->
+                      <!-- [routerLink]="['/member/edit']" -->
+                      <!-- <i class="fa fa-user"></i>Edit Profile</a>
+                  <div class="dropdown-divider"></div> -->
+                  <a class="dropdown-item" (click)="logout()"> Logout</a>
+              </div>
+          </div>
+      </div>
+  </div>
+</nav>
+<div class="container">
+  <ng-content></ng-content>
+</div>
+<router-outlet></router-outlet>

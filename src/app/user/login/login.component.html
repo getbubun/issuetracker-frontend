@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+      <a class="navbar-brand" href="#">issue tracker</a>
+
+      <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+              <a class="nav-link " (click)="goToSignUp()">Sign Up</a>
+          </li>
+      </ul>
+  </div>
+</nav>
+<div class="container">
+  <!-- <ng-content></ng-content> -->
+  <div class="row p-0 m-0">
+      <div class="col-lg"></div>
+      <div class="col-lg p-5">
+          <form #loginForm="ngForm" (submit)="login()">
+              <!-- -->
+              <h2 class="text-center ">Login</h2>
+              <hr>
+
+              <div class="form-group form-label-group">
+                  <label for="exampleInputEmail1">Email address</label>
+                  <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="username" [(ngModel)]="model.username" required placeholder="Username">
+                  
+              </div>
+              <div class="form-group form-label-group">
+                  <label for="inputEmail">Password</label>
+                  <input type="password" class="form-control" id="exampleInputPassword1" name="password" [(ngModel)]="model.password" required placeholder="Password">
+                  <a class="text-primary" (click)="goToSignUp()" >Not Registered! Click Here</a>
+              </div>
+
+              <div class="form-group text-center social-btn">
+                  
+                  <button class="btn btn-block login " type="submit">Sign In</button>
+                  <button class="btn btn-block google" type="button" (click)="signInSocial('Google')"><i class="fab fa-google"></i>Google Sign-in</button>
+                  
+              </div>
+          </form>
+      </div>
+      <div class="col-lg"></div>
+  </div>
+</div>
+
+
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="small" color="#e95420" type="ball-spin-clockwise-fade-rotating">
+  <p style="font-size: 14px; color: rgb(255, 255, 255)">Loading...</p>
+</ngx-spinner>
